@@ -1,0 +1,31 @@
+import cv2
+
+def pencil_sketch(image_path):
+    # Read the image
+    image = cv2.imread(image_path)
+
+    # Convert the image to grayscale
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Invert the grayscale image
+    inverted_gray_image = 255 - gray_image
+
+    # Apply GaussianBlur to the inverted image
+    blurred_image = cv2.GaussianBlur(inverted_gray_image, (21, 21), sigmaX=0, sigmaY=0)
+
+    # Invert the blurred image
+    inverted_blurred_image = 255 - blurred_image
+
+    # Create the pencil sketch by dividing the grayscale image by the inverted blurred image
+    pencil_sketch = cv2.divide(gray_image, inverted_blurred_image, scale=256.0)
+
+    # Show the original and pencil sketch images
+    cv2.imshow("Original Image", image)
+    cv2.imshow("Pencil Sketch", pencil_sketch)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    image_path = "path/to/your/image.jpg"  # Replace with the actual path of your image
+    pencil_sketch(image_path)
+
